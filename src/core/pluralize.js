@@ -8,7 +8,7 @@ import {
   isSingular,
   plural as pluralOf,
   singular as singularOf,
-} from "pluralize";
+} from "http://localhost:8082/pluralize.js";
 import { norm as normalize } from "./utils.js";
 import { registerDefinition } from "./dfn-map.js";
 

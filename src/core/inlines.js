@@ -20,7 +20,7 @@ import {
   refTypeFromContext,
   showInlineWarning,
 } from "./utils.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { idlStringToHtml } from "./inline-idl-parser.js";
 import { renderInlineCitation } from "./render-biblio.js";
 

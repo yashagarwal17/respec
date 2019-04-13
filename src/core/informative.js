@@ -1,7 +1,7 @@
 // Module core/informative
 // Mark specific sections as informative, based on CSS
 import { lang as defaultLang } from "../core/l10n.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 
 export const name = "core/informative";
 

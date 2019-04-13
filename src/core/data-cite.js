@@ -16,7 +16,7 @@
  */
 import { biblio, resolveRef, updateFromNetwork } from "./biblio.js";
 import { refTypeFromContext, showInlineWarning, wrapInner } from "./utils.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 export const name = "core/data-cite";
 
 function requestLookup(conf) {

@@ -1,5 +1,5 @@
 // @ts-check
-import html from "hyperhtml";
+import html from "http://localhost:8082/hyperhtml.js";
 import { pub } from "../../core/pubsubhub.js";
 import showLink from "./show-link.js";
 import showLogo from "./show-logo.js";

@@ -16,7 +16,7 @@ import {
   showInlineError,
   showInlineWarning,
 } from "./utils.js";
-import { openDB } from "idb";
+import { openDB } from "http://localhost:8082/idb.js";
 import { pub } from "./pubsubhub.js";
 
 const profiles = {

@@ -4,9 +4,8 @@
  *
  * Performs syntax highlighting to all pre and code elements.
  */
-import ghCss from "text!../../assets/github.css";
-import html from "hyperhtml";
-import { msgIdGenerator } from "./utils.js";
+import html from "http://localhost:8082/hyperhtml.js";
+import { msgIdGenerator, addStylesheet } from "./utils.js";
 import { worker } from "./worker.js";
 export const name = "core/highlight";
 
@@ -90,12 +89,6 @@ export async function run(conf) {
   const promisesToHighlight = highlightables
     .filter(elem => elem.textContent.trim())
     .map(highlightElement);
-  document.head.appendChild(
-    html`
-      <style>
-        ${ghCss}
-      </style>
-    `
-  );
+  addStylesheet("../assets/github.css");
   await Promise.all(promisesToHighlight);
 }

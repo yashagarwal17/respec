@@ -6,10 +6,9 @@
 // When an example is found, it is reported using the "example" event. This can
 // be used by a containing shell to extract all examples.
 
-import { addId } from "./utils.js";
-import css from "text!../../assets/examples.css";
+import { addId, addStylesheet } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
-import html from "hyperhtml";
+import html from "http://localhost:8082/hyperhtml.js";
 import { pub } from "./pubsubhub.js";
 
 export const name = "core/examples";
@@ -65,14 +64,7 @@ export function run(conf) {
   );
   if (!examples.length) return;
 
-  document.head.insertBefore(
-    html`
-      <style>
-        ${css}
-      </style>
-    `,
-    document.querySelector("link")
-  );
+  addStylesheet("../assets/examples.css");
 
   let number = 0;
   examples.forEach(example => {

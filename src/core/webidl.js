@@ -4,11 +4,10 @@
 // TODO:
 //  - It could be useful to report parsed IDL items as events
 //  - don't use generated content in the CSS!
-import * as webidl2 from "webidl2";
-import { flatten, normalizePadding } from "./utils.js";
-import css from "text!../../assets/webidl.css";
+import * as webidl2 from "http://localhost:8082/webidl2.js";
+import { flatten, normalizePadding, addStylesheet } from "./utils.js";
 import { findDfn } from "./dfn-finder.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { pub } from "./pubsubhub.js";
 import { registerDefinition } from "./dfn-map.js";
 
@@ -280,12 +279,7 @@ export function run() {
     return;
   }
   if (!document.querySelector(".idl:not(pre)")) {
-    const link = document.querySelector("head link");
-    if (link) {
-      const style = document.createElement("style");
-      style.textContent = css;
-      link.before(style);
-    }
+    addStylesheet("../assets/webidl.css");
   }
 
   idls.forEach(idlElement => {

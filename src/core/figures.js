@@ -6,7 +6,7 @@
 
 import { addId, renameElement, showInlineWarning, wrapInner } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 
 export const name = "core/figures";
 

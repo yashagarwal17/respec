@@ -9,20 +9,15 @@
 //  - make a release candidate that people can test
 //  - once we have something decent, merge, ship as 3.2.0
 
-import css from "text!../../assets/ui.css";
-import hyperHTML from "hyperhtml";
+import { addStylesheet } from "../core/utils.js";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { markdownToHtml } from "./markdown.js";
-import shortcut from "../shortcut.js";
+// import shortcut from "http://localhost:8082/shortcut.js";
 import { sub } from "./pubsubhub.js";
 export const name = "core/ui";
 
 // Opportunistically inserts the style, with the chance to reduce some FOUC
-const styleElement = document.createElement("style");
-styleElement.id = "respec-ui-styles";
-styleElement.textContent = css;
-styleElement.classList.add("removeOnSave");
-
-document.head.appendChild(styleElement);
+addStylesheet("../assets/ui.css");
 
 function ariaDecorate(elem, ariaMap) {
   if (!elem) {
@@ -140,7 +135,7 @@ export const ui = {
     const menuItem = hyperHTML`<li role=menuitem>${button}</li>`;
     menuItem.addEventListener("click", handler);
     menu.appendChild(menuItem);
-    if (keyShort) shortcut.add(keyShort, handler);
+    // if (keyShort) shortcut.add(keyShort, handler);
     return button;
   },
   error(msg) {
@@ -183,13 +178,13 @@ export const ui = {
     modal.hidden = false;
   },
 };
-shortcut.add("Esc", () => ui.closeModal());
-shortcut.add("Ctrl+Alt+Shift+E", () => {
-  if (buttons.error) buttons.error.click();
-});
-shortcut.add("Ctrl+Alt+Shift+W", () => {
-  if (buttons.warning) buttons.warning.click();
-});
+// shortcut.add("Esc", () => ui.closeModal());
+// shortcut.add("Ctrl+Alt+Shift+E", () => {
+//   if (buttons.error) buttons.error.click();
+// });
+// shortcut.add("Ctrl+Alt+Shift+W", () => {
+//   if (buttons.warning) buttons.warning.click();
+// });
 window.respecUI = ui;
 sub("error", details => ui.error(details));
 sub("warn", details => ui.warning(details));

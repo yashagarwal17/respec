@@ -11,11 +11,10 @@
 // numbered to avoid involuntary clashes.
 // If the configuration has issueBase set to a non-empty string, and issues are
 // manually numbered, a link to the issue is created using issueBase and the issue number
-import { addId, joinAnd, parents } from "./utils.js";
-import css from "text!../../assets/issues-notes.css";
+import { addId, joinAnd, parents, addStylesheet } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
 import { fetchAndStoreGithubIssues } from "./github-api.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { pub } from "./pubsubhub.js";
 
 /**
@@ -284,11 +283,7 @@ export async function run(conf) {
   const ghIssues = conf.githubAPI
     ? await fetchAndStoreGithubIssues(conf)
     : new Map();
-  const { head: headElem } = document;
-  headElem.insertBefore(
-    hyperHTML`<style>${[css]}</style>`,
-    headElem.querySelector("link")
-  );
+  addStylesheet("../assets/issues-notes.css");
   handleIssues(issuesAndNotes, ghIssues, conf);
   const ednotes = document.querySelectorAll(".ednote");
   ednotes.forEach(ednote => {

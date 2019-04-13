@@ -44,7 +44,7 @@
  * The whitespace of pre elements are left alone.
  */
 
-import marked from "marked";
+import marked from "http://localhost:8082/marked.js";
 import { normalizePadding } from "./utils.js";
 export const name = "core/markdown";
 

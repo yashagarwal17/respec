@@ -7,7 +7,7 @@
  * All is done while keeping in mind that exported html stays clean
  * on export.
  */
-import hlVars from "text!../../assets/var.css";
+import { addStylesheet } from "./utils.js";
 import { sub } from "./pubsubhub.js";
 
 export const name = "core/highlight-vars";
@@ -16,10 +16,7 @@ export function run(conf) {
   if (!conf.highlightVars) {
     return;
   }
-  const styleElement = document.createElement("style");
-  styleElement.textContent = hlVars;
-  styleElement.classList.add("removeOnSave");
-  document.head.appendChild(styleElement);
+  addStylesheet("../assets/var.css");
 
   document
     .querySelectorAll("var")

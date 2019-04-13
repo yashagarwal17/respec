@@ -3,9 +3,8 @@
 // Handles the marking up of best practices, and can generate a summary of all of them.
 // The summary is generated if there is a section in the document with ID bp-summary.
 // Best practices are marked up with span.practicelab.
-import { addId } from "./utils.js";
-import css from "text!../../assets/bp.css";
-import hyperHTML from "hyperhtml";
+import { addId, addStylesheet } from "./utils.js";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { pub } from "./pubsubhub.js";
 
 export const name = "core/best-practices";
@@ -27,10 +26,7 @@ export function run() {
   }
   const bpSummary = document.getElementById("bp-summary");
   if (bps.length) {
-    document.head.insertBefore(
-      hyperHTML`<style>${[css]}</style>`,
-      document.head.querySelector("link")
-    );
+    addStylesheet("../assets/bp.css");
     if (bpSummary) {
       bpSummary.appendChild(hyperHTML`<h2>Best Practices Summary</h2>`);
       bpSummary.appendChild(ul);

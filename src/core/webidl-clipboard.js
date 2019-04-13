@@ -6,12 +6,11 @@
  * well-formatted IDL to the clipboard.
  *
  */
-import svgClipboard from "text!../../assets/clipboard.svg";
 export const name = "core/webidl-clipboard";
 
 // This button serves a prototype that we clone as needed.
 const copyButton = document.createElement("button");
-copyButton.innerHTML = svgClipboard;
+copyButton.innerHTML = "Copy";
 copyButton.title = "Copy IDL to clipboard";
 copyButton.classList.add("respec-button-copy-paste", "removeOnSave");
 

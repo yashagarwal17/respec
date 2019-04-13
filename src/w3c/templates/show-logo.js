@@ -1,5 +1,5 @@
 // @ts-check
-import html from "hyperhtml";
+import html from "http://localhost:8082/hyperhtml.js";
 import { showInlineWarning } from "../../core/utils.js";
 
 export default obj => {

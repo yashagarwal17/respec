@@ -7,22 +7,22 @@
  */
 export const name = "core/worker";
 
-// Opportunistically preload syntax highlighter, which is used by the worker
-import { createResourceHint } from "./utils.js";
-import { expose } from "./expose-modules.js";
-import workerScript from "text!../../worker/respec-worker.js";
-// Opportunistically preload syntax highlighter
-const hint = {
-  hint: "preload",
-  href: "https://www.w3.org/Tools/respec/respec-highlight.js",
-  as: "script",
-};
-const link = createResourceHint(hint);
-document.head.appendChild(link);
+// // Opportunistically preload syntax highlighter, which is used by the worker
+// import { createResourceHint } from "./utils.js";
+// import { expose } from "./expose-modules.js";
+// import workerScript from "text!../../worker/respec-worker.js";
+// // Opportunistically preload syntax highlighter
+// const hint = {
+//   hint: "preload",
+//   href: "https://www.w3.org/Tools/respec/respec-highlight.js",
+//   as: "script",
+// };
+// const link = createResourceHint(hint);
+// document.head.appendChild(link);
 
-const workerURL = URL.createObjectURL(
-  new Blob([workerScript], { type: "application/javascript" })
-);
-export const worker = new Worker(workerURL);
+// const workerURL = URL.createObjectURL(
+//   new Blob([workerScript], { type: "application/javascript" })
+// );
+export const worker = "I am worker";// new Worker(workerURL);
 
-expose(name, { worker });
+// expose(name, { worker });

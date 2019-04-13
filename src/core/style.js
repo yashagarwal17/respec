@@ -9,17 +9,15 @@
 // CONFIGURATION
 //  - noReSpecCSS: if you're using a profile that loads this module but you don't want
 //    the style, set this to true
-import css from "text!../../assets/respec2.css";
+import { addStylesheet } from "../core/utils.js";
+
 export const name = "core/style";
 
 // Opportunistically inserts the style, with the chance to reduce some FOUC
-const styleElement = document.createElement("style");
-styleElement.id = "respec-mainstyle";
-styleElement.textContent = css;
-document.head.appendChild(styleElement);
+addStylesheet("../assets/respec2.css", "respec-mainstyle")
 
 export function run(conf) {
   if (conf.noReSpecCSS) {
-    styleElement.remove();
+    document.getElementById("respec-mainstyle").remove();
   }
 }

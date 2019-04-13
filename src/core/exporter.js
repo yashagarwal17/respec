@@ -7,7 +7,7 @@
  */
 
 import { expose } from "./expose-modules.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { pub } from "./pubsubhub.js";
 import { removeReSpec } from "./utils.js";
 

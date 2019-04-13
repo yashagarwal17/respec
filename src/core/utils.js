@@ -428,6 +428,13 @@ export function norm(str) {
   return str.trim().replace(/\s+/g, " ");
 }
 
+export function addStylesheet(url, id) {
+  const link = document.createElement("link");
+  if (id) link.id = id;
+  link.href = url;
+  document.head.appendChild(link);
+}
+
 // --- DATE HELPERS -------------------------------------------------------------------------------
 // Takes a Date object and an optional separator and returns the year,month,day representation with
 // the custom separator (defaulting to none) and proper 0-padding

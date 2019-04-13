@@ -4,10 +4,9 @@
  * Adds a caniuse support table for a "feature" #1238
  * Usage options: https://github.com/w3c/respec/wiki/caniuse
  */
+import { addStylesheet, createResourceHint } from "./utils.js";
 import { pub, sub } from "./pubsubhub.js";
-import caniuseCss from "text!../../assets/caniuse.css";
-import { createResourceHint } from "./utils.js";
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 
 export const name = "core/caniuse";
 
@@ -58,8 +57,7 @@ export async function run(conf) {
     href: "https://respec.org",
   });
   document.head.appendChild(link);
-  document.head.appendChild(hyperHTML`
-    <style class="removeOnSave">${caniuseCss}</style>`);
+  addStylesheet("../assets/caniuse.css")
 
   const headDlElem = document.querySelector(".head dl");
   const contentPromise = new Promise(async resolve => {

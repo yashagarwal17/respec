@@ -1,4 +1,4 @@
-import html from "hyperhtml";
+import html from "http://localhost:8082/hyperhtml.js";
 
 export default (items = []) => {
   return items.map(getItem);

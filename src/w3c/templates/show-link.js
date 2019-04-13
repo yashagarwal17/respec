@@ -1,5 +1,5 @@
 // @ts-check
-import hyperHTML from "hyperhtml";
+import hyperHTML from "http://localhost:8082/hyperhtml.js";
 import { pub } from "../../core/pubsubhub.js";
 const html = hyperHTML;
 
