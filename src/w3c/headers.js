@@ -93,7 +93,7 @@ import { ISODate, concatDate, joinAnd } from "../core/utils.js";
 import cgbgHeadersTmpl from "./templates/cgbg-headers.js";
 import cgbgSotdTmpl from "./templates/cgbg-sotd.js";
 import headersTmpl from "./templates/headers.js";
-import { hyperHTML } from "../core/import-maps.js";
+import { html } from "../core/import-maps.js";
 import { pub } from "../core/pubsubhub.js";
 import sotdTmpl from "./templates/sotd.js";
 
@@ -598,7 +598,7 @@ export function run(conf) {
     );
   }
 
-  hyperHTML.bind(sotd)`${populateSoTD(conf, sotd)}`;
+  html.bind(sotd)`${populateSoTD(conf, sotd)}`;
 
   if (!conf.implementationReportURI && conf.isCR) {
     pub(

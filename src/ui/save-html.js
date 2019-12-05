@@ -2,7 +2,7 @@
 // Module ui/save-html
 // Saves content to HTML when asked to
 import { l10n, lang } from "../core/l10n.js";
-import { hyperHTML } from "../core/import-maps.js";
+import { html } from "../core/import-maps.js";
 import { pub } from "../core/pubsubhub.js";
 import { rsDocToDataURL } from "../core/exporter.js";
 import { ui } from "../core/ui.js";
@@ -48,7 +48,7 @@ const downloadLinks = [
 
 function toDownloadLink(details) {
   const { id, href, fileName, title, type } = details;
-  return hyperHTML`
+  return html`
     <a
       href="${href}"
       id="${id}"
@@ -56,16 +56,19 @@ function toDownloadLink(details) {
       type="${type}"
       class="respec-save-button"
       onclick=${() => ui.closeModal()}
-    >${title}</a>`;
+      >${title}</a
+    >
+  `;
 }
 
 const saveDialog = {
   async show(button) {
     await document.respecIsReady;
-    const div = hyperHTML`
+    const div = html`
       <div class="respec-save-buttons">
         ${downloadLinks.map(toDownloadLink)}
-      </div>`;
+      </div>
+    `;
     ui.freshModal(l10n[lang].save_snapshot, div, button);
   },
 };

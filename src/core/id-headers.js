@@ -5,7 +5,7 @@
 
 export const name = "core/id-headers";
 import { addId } from "./utils.js";
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 
 export function run(conf) {
   /** @type {NodeListOf<HTMLElement>} */
@@ -16,7 +16,7 @@ export function run(conf) {
     addId(h);
     if (!conf.addSectionLinks) continue;
     const id = h.parentElement.id || h.id;
-    h.appendChild(hyperHTML`
+    h.appendChild(html`
       <a href="${`#${id}`}" class="self-link" aria-label="§"></a>
     `);
   }

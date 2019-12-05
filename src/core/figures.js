@@ -6,7 +6,7 @@
 
 import { addId, renameElement, showInlineWarning, wrapInner } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 
 export const name = "core/figures";
 
@@ -51,8 +51,14 @@ export function run() {
   if (tof.length && tofElement) {
     decorateTableOfFigures(tofElement);
     tofElement.append(
-      hyperHTML`<h2>${l10n.list_of_figures}</h2>`,
-      hyperHTML`<ul class='tof'>${tof}</ul>`
+      html`
+        <h2>${l10n.list_of_figures}</h2>
+      `,
+      html`
+        <ul class="tof">
+          ${tof}
+        </ul>
+      `
     );
   }
 }
@@ -85,8 +91,19 @@ function decorateFigure(figure, caption, i) {
   const title = caption.textContent;
   addId(figure, "fig", title);
   // set proper caption title
-  wrapInner(caption, hyperHTML`<span class='fig-title'>`);
-  caption.prepend(l10n.fig, hyperHTML`<bdi class='figno'>${i + 1}</bdi>`, " ");
+  wrapInner(
+    caption,
+    html`
+      <span class="fig-title"></span>
+    `
+  );
+  caption.prepend(
+    l10n.fig,
+    html`
+      <bdi class="figno">${i + 1}</bdi>
+    `,
+    " "
+  );
 }
 
 /**
@@ -99,9 +116,11 @@ function getTableOfFiguresListItem(figureId, caption) {
   tofCaption.querySelectorAll("a").forEach(anchor => {
     renameElement(anchor, "span").removeAttribute("href");
   });
-  return hyperHTML`<li class='tofline'>
-    <a class='tocxref' href='${`#${figureId}`}'>${tofCaption.childNodes}</a>
-  </li>`;
+  return html`
+    <li class="tofline">
+      <a class="tocxref" href="${`#${figureId}`}">${tofCaption.childNodes}</a>
+    </li>
+  `;
 }
 
 function normalizeImages(doc) {

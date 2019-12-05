@@ -14,7 +14,7 @@
 import { addId, joinAnd, parents } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
 import { fetchAsset } from "./text-loader.js";
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 import { pub } from "./pubsubhub.js";
 
 export const name = "core/issues-notes";
@@ -94,10 +94,13 @@ function handleIssues(ins, ghIssues, conf) {
     if (!isInline) {
       const cssClass = isFeatureAtRisk ? `${type} atrisk` : type;
       const ariaRole = type === "note" ? "note" : null;
-      const div = hyperHTML`<div class="${cssClass}" role="${ariaRole}"></div>`;
+      const div = html`
+        <div class="${cssClass}" role="${ariaRole}"></div>
+      `;
       const title = document.createElement("span");
-      const titleParent = hyperHTML`
-        <div role='heading' class='${`${type}-title marker`}'>${title}</div>`;
+      const titleParent = html`
+        <div role="heading" class="${`${type}-title marker`}">${title}</div>
+      `;
       addId(titleParent, "h", type);
       let text = displayType;
       if (inno.id) {
@@ -207,9 +210,13 @@ function getIssueType(inno, conf) {
 function linkToIssueTracker(dataNum, conf, { isFeatureAtRisk = false } = {}) {
   // Set issueBase to cause issue to be linked to the external issue tracker
   if (!isFeatureAtRisk && conf.issueBase) {
-    return hyperHTML`<a href='${conf.issueBase + dataNum}'/>`;
+    return html`
+      <a href="${conf.issueBase + dataNum}" />
+    `;
   } else if (isFeatureAtRisk && conf.atRiskBase) {
-    return hyperHTML`<a href='${conf.atRiskBase + dataNum}'/>`;
+    return html`
+      <a href="${conf.atRiskBase + dataNum}" />
+    `;
   }
 }
 
@@ -220,9 +227,11 @@ function linkToIssueTracker(dataNum, conf, { isFeatureAtRisk = false } = {}) {
 function createIssueSummaryEntry(l10nIssue, report, id) {
   const issueNumberText = `${l10nIssue} ${report.number}`;
   const title = report.title
-    ? hyperHTML`<span style="text-transform: none">: ${report.title}</span>`
+    ? html`
+        <span style="text-transform: none">: ${report.title}</span>
+      `
     : "";
-  return hyperHTML`
+  return html`
     <li><a href="${`#${id}`}">${issueNumberText}</a>${title}</li>
   `;
 }
@@ -238,7 +247,11 @@ function makeIssueSectionSummary(issueList) {
 
   issueList.hasChildNodes()
     ? issueSummaryElement.append(issueList)
-    : issueSummaryElement.append(hyperHTML`<p>${l10n.no_issues_in_spec}</p>`);
+    : issueSummaryElement.append(
+        html`
+          <p>${l10n.no_issues_in_spec}</p>
+        `
+      );
   if (
     !heading ||
     (heading && heading !== issueSummaryElement.firstElementChild)
@@ -272,11 +285,15 @@ function createLabelsGroup(labels, title, repoURL) {
   }
   if (labelNames.length) {
     const ariaLabel = `This issue is labelled as ${joinedNames}.`;
-    return hyperHTML`<span
-      class="issue-label"
-      aria-label="${ariaLabel}">: ${title}${labelsGroup}</span>`;
+    return html`
+      <span class="issue-label" aria-label="${ariaLabel}"
+        >: ${title}${labelsGroup}</span
+      >
+    `;
   }
-  return hyperHTML`<span class="issue-label">: ${title}${labelsGroup}</span>`;
+  return html`
+    <span class="issue-label">: ${title}${labelsGroup}</span>
+  `;
 }
 
 /**
@@ -291,10 +308,11 @@ function createLabel(label, repoURL) {
   const textColorClass = isNaN(rgb) || isLight(rgb) ? "light" : "dark";
   const cssClasses = `respec-gh-label respec-label-${textColorClass}`;
   const style = `background-color: #${color}`;
-  return hyperHTML`<a
-    class="${cssClasses}"
-    style="${style}"
-    href="${issuesURL.href}">${name}</a>`;
+  return html`
+    <a class="${cssClasses}" style="${style}" href="${issuesURL.href}"
+      >${name}</a
+    >
+  `;
 }
 
 /**
@@ -341,7 +359,11 @@ export async function run(conf) {
   const css = await cssPromise;
   const { head: headElem } = document;
   headElem.insertBefore(
-    hyperHTML`<style>${[css]}</style>`,
+    html`
+      <style>
+        ${[css]}
+      </style>
+    `,
     headElem.querySelector("link")
   );
   handleIssues(issuesAndNotes, ghIssues, conf);

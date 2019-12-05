@@ -9,7 +9,7 @@
 import { addId } from "./utils.js";
 import { lang as defaultLang } from "../core/l10n.js";
 import { fetchAsset } from "./text-loader.js";
-import { hyperHTML as html } from "./import-maps.js";
+import { html } from "./import-maps.js";
 import { pub } from "./pubsubhub.js";
 
 export const name = "core/examples";

@@ -10,7 +10,7 @@
  * Docs: https://github.com/w3c/respec/wiki/data-tests
  */
 import { lang as defaultLang } from "./l10n.js";
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 import { pub } from "./pubsubhub.js";
 import { showInlineWarning } from "./utils.js";
 const l10n = {
@@ -63,11 +63,12 @@ function toListItem(href) {
     emojiList.push(manualPerformEmoji);
   }
 
-  const testList = hyperHTML`
+  const testList = html`
     <li>
       <a href="${href}">
         ${testFileName}
-      </a> ${emojiList}
+      </a>
+      ${emojiList}
     </li>
   `;
   return testList;
@@ -135,12 +136,14 @@ function handleDuplicates(testURLs, elem) {
  */
 function toHTML(testURLs) {
   const uniqueList = [...new Set(testURLs)];
-  const details = hyperHTML`
+  const details = html`
     <details class="respec-tests-details removeOnSave">
       <summary>
         tests: ${uniqueList.length}
       </summary>
-      <ul>${uniqueList.map(toListItem)}</ul>
+      <ul>
+        ${uniqueList.map(toListItem)}
+      </ul>
     </details>
   `;
   return details;

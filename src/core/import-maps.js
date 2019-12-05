@@ -13,7 +13,7 @@ export const idb = _idb;
 export const webidl2 = _webidl2;
 /** @type {import("hyperhtml").default} */
 // @ts-ignore
-export const hyperHTML = _hyperHTML;
+export const html = _hyperHTML;
 /** @type {import("marked")} */
 // @ts-ignore
 export const marked = _marked;

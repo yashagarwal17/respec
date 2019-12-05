@@ -3,7 +3,7 @@
 // Search Specref database
 import { l10n, lang } from "../core/l10n.js";
 import { flatten } from "../core/utils.js";
-import { hyperHTML } from "../core/import-maps.js";
+import { html } from "../core/import-maps.js";
 import { ui } from "../core/ui.js";
 import { wireReference } from "../core/biblio.js";
 
@@ -17,8 +17,8 @@ const specrefURL = "https://specref.herokuapp.com/";
 const refSearchURL = `${specrefURL}search-refs`;
 const reveseLookupURL = `${specrefURL}reverse-lookup`;
 const form = document.createElement("form");
-const renderer = hyperHTML.bind(form);
-const resultList = hyperHTML.bind(document.createElement("div"));
+const renderer = html.bind(form);
+const resultList = html.bind(document.createElement("div"));
 
 form.id = "specref-ui";
 
@@ -50,7 +50,7 @@ function renderResults(resultMap, query, timeTaken) {
 }
 
 function toDefinitionPair([key, entry]) {
-  return hyperHTML.wire(entry)`
+  return html.wire(entry)`
     <dt>
       [${key}]
     </dt>
@@ -129,11 +129,11 @@ function show() {
   input.focus();
 }
 
-const mast = hyperHTML.wire()`
+const mast = html`
   <header>
     <p>
-      An Open-Source, Community-Maintained Database of
-      Web Standards & Related References.
+      An Open-Source, Community-Maintained Database of Web Standards & Related
+      References.
     </p>
   </header>
   <div class="searchcomponent">
@@ -141,13 +141,13 @@ const mast = hyperHTML.wire()`
       name="searchBox"
       type="search"
       autocomplete="off"
-      placeholder="Keywords, titles, authors, urls…">
-    <button
-      type="submit">
-        Search
+      placeholder="Keywords, titles, authors, urls…"
+    />
+    <button type="submit">
+      Search
     </button>
     <label>
-      <input type="checkbox" name="includeVersions"> Include all versions.
+      <input type="checkbox" name="includeVersions" /> Include all versions.
     </label>
   </div>
 `;

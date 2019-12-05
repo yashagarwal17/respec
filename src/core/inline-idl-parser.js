@@ -2,7 +2,7 @@
 // Parses an inline IDL string (`{{ idl string }}`)
 //  and renders its components as HTML
 
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 import { showInlineError } from "./utils.js";
 const idlPrimitiveRegex = /^[a-z]+(\s+[a-z]+)+$/; // {{unrestricted double}} {{ double }}
 const exceptionRegex = /\B"([^"]*)"\B/; // {{ "SomeException" }}
@@ -141,7 +141,9 @@ function renderBase(details) {
   // Check if base is a local variable in a section
   const { identifier, renderParent } = details;
   if (renderParent) {
-    return hyperHTML`<a data-xref-type="_IDL_"><code>${identifier}</code></a>`;
+    return html`
+      <a data-xref-type="_IDL_"><code>${identifier}</code></a>
+    `;
   }
 }
 
@@ -153,12 +155,16 @@ function renderInternalSlot(details) {
   const { identifier, parent, renderParent } = details;
   const { identifier: linkFor } = parent || {};
   const lt = `[[${identifier}]]`;
-  const html = hyperHTML`${parent && renderParent ? "." : ""}<a
-    data-xref-type="attribute"
-    data-link-for=${linkFor}
-    data-xref-for=${linkFor}
-    data-lt="${lt}"><code>[[${identifier}]]</code></a>`;
-  return html;
+  const fragment = html`
+    ${parent && renderParent ? "." : ""}<a
+      data-xref-type="attribute"
+      data-link-for=${linkFor}
+      data-xref-for=${linkFor}
+      data-lt="${lt}"
+      ><code>[[${identifier}]]</code></a
+    >
+  `;
+  return fragment;
 }
 
 /**
@@ -168,12 +174,15 @@ function renderInternalSlot(details) {
 function renderAttribute(details) {
   const { parent, identifier, renderParent } = details;
   const { identifier: linkFor } = parent || {};
-  const html = hyperHTML`${renderParent ? "." : ""}<a
+  const fragment = html`
+    ${renderParent ? "." : ""}<a
       data-xref-type="attribute|dict-member"
       data-link-for="${linkFor}"
       data-xref-for="${linkFor}"
-    ><code>${identifier}</code></a>`;
-  return html;
+      ><code>${identifier}</code></a
+    >
+  `;
+  return fragment;
 }
 
 /**
@@ -185,13 +194,16 @@ function renderMethod(details) {
   const { identifier: linkFor } = parent || {};
   const argsText = args.map(arg => `<var>${arg}</var>`).join(", ");
   const searchText = `${identifier}(${args.join(", ")})`;
-  const html = hyperHTML`${parent && renderParent ? "." : ""}<a
-    data-xref-type="${type}"
-    data-link-for="${linkFor}"
-    data-xref-for="${linkFor}"
-    data-lt="${searchText}"
-    ><code>${identifier}</code></a><code>(${[argsText]})</code>`;
-  return html;
+  const fragment = html`
+    ${parent && renderParent ? "." : ""}<a
+      data-xref-type="${type}"
+      data-link-for="${linkFor}"
+      data-xref-for="${linkFor}"
+      data-lt="${searchText}"
+      ><code>${identifier}</code></a
+    ><code>(${[argsText]})</code>
+  `;
+  return fragment;
 }
 
 /**
@@ -203,13 +215,16 @@ function renderMethod(details) {
 function renderEnum(details) {
   const { identifier, enumValue, parent } = details;
   const forContext = parent ? parent.identifier : identifier;
-  const html = hyperHTML`"<a
-    data-xref-type="enum-value"
-    data-link-for="${forContext}"
-    data-xref-for="${forContext}"
-    data-lt="${!enumValue ? "the-empty-string" : null}"
-    ><code>${enumValue}</code></a>"`;
-  return html;
+  const fragment = html`
+    "<a
+      data-xref-type="enum-value"
+      data-link-for="${forContext}"
+      data-xref-for="${forContext}"
+      data-lt="${!enumValue ? "the-empty-string" : null}"
+      ><code>${enumValue}</code></a
+    >"
+  `;
+  return fragment;
 }
 
 /**
@@ -219,11 +234,12 @@ function renderEnum(details) {
  */
 function renderException(details) {
   const { identifier } = details;
-  const html = hyperHTML`"<a
-    data-cite="WebIDL"
-    data-xref-type="exception"
-    ><code>${identifier}</code></a>"`;
-  return html;
+  const fragment = html`
+    "<a data-cite="WebIDL" data-xref-type="exception"
+      ><code>${identifier}</code></a
+    >"
+  `;
+  return fragment;
 }
 
 /**
@@ -233,11 +249,12 @@ function renderException(details) {
  */
 function renderIdlPrimitiveType(details) {
   const { identifier } = details;
-  const html = hyperHTML`<a
-    data-cite="WebIDL"
-    data-xref-type="interface"
-    ><code>${identifier}</code></a>`;
-  return html;
+  const fragment = html`
+    <a data-cite="WebIDL" data-xref-type="interface"
+      ><code>${identifier}</code></a
+    >
+  `;
+  return fragment;
 }
 
 /**
@@ -250,11 +267,13 @@ export function idlStringToHtml(str) {
   try {
     results = parseInlineIDL(str);
   } catch (error) {
-    const el = hyperHTML`<span>{{ ${str} }}</span>`;
+    const el = html`
+      <span>{{ ${str} }}</span>
+    `;
     showInlineError(el, error.message, "Error: Invalid inline IDL string");
     return el;
   }
-  const render = hyperHTML(document.createDocumentFragment());
+  const render = html(document.createDocumentFragment());
   const output = [];
   for (const details of results) {
     switch (details.type) {

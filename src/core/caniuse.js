@@ -7,7 +7,7 @@
 import { pub, sub } from "./pubsubhub.js";
 import { createResourceHint } from "./utils.js";
 import { fetchAsset } from "./text-loader.js";
-import { hyperHTML } from "./import-maps.js";
+import { html } from "./import-maps.js";
 
 export const name = "core/caniuse";
 
@@ -75,8 +75,11 @@ export async function run(conf) {
   const featureURL = new URL(options.feature, "https://caniuse.com/").href;
 
   const caniuseCss = await caniuseCssPromise;
-  document.head.appendChild(hyperHTML`
-    <style class="removeOnSave">${caniuseCss}</style>`);
+  document.head.appendChild(html`
+    <style class="removeOnSave">
+      ${caniuseCss}
+    </style>
+  `);
 
   const headDlElem = document.querySelector(".head dl");
   const contentPromise = (async () => {
@@ -90,22 +93,27 @@ export async function run(conf) {
         `Couldn't find feature "${options.feature}" on caniuse.com? ` +
         "Please check the feature key on [caniuse.com](https://caniuse.com)";
       pub("error", msg);
-      return hyperHTML`<a href="${featureURL}">caniuse.com</a>`;
+      return html`
+        <a href="${featureURL}">caniuse.com</a>
+      `;
     }
   })();
-  const definitionPair = hyperHTML`
+  const definitionPair = html`
     <dt class="caniuse-title">Browser support:</dt>
-    <dd class="caniuse-stats">${{
-      any: contentPromise,
-      placeholder: "Fetching data from caniuse.com...",
-    }}</dd>`;
+    <dd class="caniuse-stats">
+      ${{
+        any: contentPromise,
+        placeholder: "Fetching data from caniuse.com...",
+      }}
+    </dd>
+  `;
   headDlElem.append(...definitionPair.childNodes);
   await contentPromise;
 
   // remove from export
   pub("amend-user-config", { caniuse: options.feature });
   sub("beforesave", outputDoc => {
-    hyperHTML.bind(outputDoc.querySelector(".caniuse-stats"))`
+    html.bind(outputDoc.querySelector(".caniuse-stats"))`
       <a href="${featureURL}">caniuse.com</a>`;
   });
 }
@@ -162,11 +170,10 @@ async function fetchStats(apiURL, options) {
  */
 function createTableHTML(featureURL, stats) {
   // render the support table
-  return hyperHTML`
+  return html`
     ${Object.entries(stats).map(addBrowser)}
-    <a href="${featureURL}"
-      title="Get details at caniuse.com">More info
-    </a>`;
+    <a href="${featureURL}" title="Get details at caniuse.com">More info</a>
+  `;
 }
 
 /**
@@ -189,22 +196,26 @@ function addBrowser([browserName, browserData]) {
   const addLatestVersion = ([version, supportKeys]) => {
     const { className, title } = getSupport(supportKeys);
     const buttonText = `${BROWSERS.get(browserName) || browserName} ${version}`;
-    return hyperHTML`
-      <button class="${className}" title="${title}">${buttonText}</button>`;
+    return html`
+      <button class="${className}" title="${title}">${buttonText}</button>
+    `;
   };
 
   /** @param {[string, string[]]} args */
   const addBrowserVersion = ([version, supportKeys]) => {
     const { className, title } = getSupport(supportKeys);
-    return hyperHTML`<li class="${className}" title="${title}">${version}</li>`;
+    return html`
+      <li class="${className}" title="${title}">${version}</li>
+    `;
   };
 
   const [latestVersion, ...olderVersions] = browserData;
-  return hyperHTML`
+  return html`
     <div class="caniuse-browser">
       ${addLatestVersion(latestVersion)}
       <ul>
         ${olderVersions.map(addBrowserVersion)}
       </ul>
-    </div>`;
+    </div>
+  `;
 }
