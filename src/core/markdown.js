@@ -86,6 +86,15 @@ const inlineElems = new Set([
   "var",
 ]);
 
+class Renderer extends marked.Renderer {
+  code(code, language, isEscaped) {
+    if (language === "webidl") {
+      return `<pre class="idl">${code}</pre>`;
+    }
+    return super.code(code, language, isEscaped);
+  }
+}
+
 /**
  * @param {string} text
  */
@@ -205,6 +214,8 @@ export function markdownToHtml(text) {
     sanitize: false,
     gfm: true,
     headerIds: false,
+    langPrefix: "",
+    renderer: new Renderer(),
   });
   return result;
 }

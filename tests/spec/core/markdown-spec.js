@@ -241,6 +241,49 @@ describe("Core - Markdown", () => {
     expect(foo.contains(bar)).toBeFalsy();
   });
 
+  it("supports backticks for syntax highlighting", async () => {
+    const body = `
+      ## test
+
+      \`\`\` webidl
+      [Exposed=Window]
+      interface Foo {
+        constructor();
+        attribute DOMString bar;
+        void doTheFoo();
+      };
+      \`\`\`
+
+      \`\`\` js
+      console.log("hey")
+      \`\`\`
+
+      \`\`\`
+      IDK what I am
+      \`\`\`
+    `;
+    const ops = makeStandardOps({ format: "markdown" }, body);
+    const doc = await makeRSDoc(ops);
+    const [webidlBlock, jsBlock, normalBlock] = doc.querySelectorAll("pre");
+
+    expect(webidlBlock.classList).toContain("idl");
+    expect(webidlBlock.querySelector("code.hljs")).toBeNull();
+    expect(webidlBlock.querySelector(".idlConstructor")).not.toBeNull();
+    expect(webidlBlock.querySelector(".respec-button-copy-paste")).toBeTruthy();
+
+    expect(jsBlock.firstElementChild.localName).toBe("code");
+    expect(
+      jsBlock.querySelector("code.hljs").classList.contains("js")
+    ).toBeTruthy();
+    expect(jsBlock.querySelector("code.hljs span")).not.toBeNull();
+    expect(jsBlock.querySelector(".respec-button-copy-paste")).toBeNull();
+
+    expect(normalBlock.firstElementChild.localName).toBe("code");
+    expect(normalBlock.querySelector(".respec-button-copy-paste")).toBeNull();
+    expect(normalBlock.querySelector("code.hljs")).not.toBeNull();
+    expect(normalBlock.querySelector("code.hljs span")).toBeNull();
+  });
+
   describe("nolinks options", () => {
     it("automatically links URLs in pre when missing (smoke test)", async () => {
       const body = `
